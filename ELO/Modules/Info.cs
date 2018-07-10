@@ -110,24 +110,26 @@
         }
 
         [CustomPermissions]
-        [Command("LeaderBoard")]
+        [Command("LeaderBoardSortModes")]
         [Alias("SortLeaderboard", "SortLb", "LeaderboardSort")]
         [Summary("Displays leaderboard sort modes")]
         public Task LeaderboardAsync()
         {
-            return SimpleEmbedAsync("Leader board Sort Options:\n" +
+            return SimpleEmbedAsync("Leaderboard Sort Options:\n" +
                                     "Win\r\n" +
                                     "Loss\r\n" +
                                     "Points\r\n" +
                                     "GamesPlayed\r\n" +
                                     "Kills\r\n" +
                                     "Deaths\r\n" +
-                                    "Draws");
+                                    "Draws\r\n" +
+                                    "\r\n" +
+                                    $"**Default Sort Mode**: {LeaderboardSortMode.Points}");
         }
 
         [CustomPermissions]
         [Command("Leaderboard")]
-        [Alias("SortLeaderboard", "SortLb", "LeaderboardSort")]
+        [Alias("ShowLB", "top", "top10", "top5", "top15")]
         [Summary("Displays the leaderboard")]
         public Task LeaderboardAsync(LeaderboardSortMode sortMode = LeaderboardSortMode.Points)
         {
@@ -199,7 +201,7 @@
 
             var pager = new PaginatedMessage
             {
-                Title = "ELO Bot Leader board",
+                Title = "ELO - Leaderboard",
                 Pages = pages,
                 Color = Color.Blue
             };

@@ -74,7 +74,7 @@
         }
 
         [Command("Leave")]
-        [Alias("l", "out", "unSign", "remove", "unready")]
+        [Alias("l", "out", "unSign", "remove", "unready", "add")]
         [Summary("Leave the current lobby's queue")]
         public async Task LeaveLobbyAsync()
         {
