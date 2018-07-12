@@ -126,11 +126,11 @@
             else
             {
                 await SimpleEmbedAsync($"**Team1 Captain** {Context.Guild.GetUser(Context.Elo.Lobby.Game.Team1.Captain)?.Mention}\n" +
-                                       $"**Team1:** {string.Join(", ", Context.Elo.Lobby.Game.Team1.Players.Select(x => Context.Guild.GetUser(x)?.Mention).ToList())}\n" +
+                                       $"**Team1:** {string.Join(", ", Context.Elo.Lobby.Game.Team1.Players.Select(x => Context.Guild.GetUser(x)?.Mention).ToList())}\n\n" +
                                        $"**Team2 Captain** {Context.Guild.GetUser(Context.Elo.Lobby.Game.Team2.Captain)?.Mention}\n" +
-                                       $"**Team2:** {string.Join(", ", Context.Elo.Lobby.Game.Team2.Players.Select(x => Context.Guild.GetUser(x)?.Mention).ToList())}\n" +
+                                       $"**Team2:** {string.Join(", ", Context.Elo.Lobby.Game.Team2.Players.Select(x => Context.Guild.GetUser(x)?.Mention).ToList())}\n\n" +
                                        $"**Select Your Teams using `{Context.Prefix}pick <@user>`**\n" +
-                                       $"**It is Captain {(Context.Elo.Lobby.Game.Team1.TurnToPick ? 1 : 2)}'s Turn to pick**\n" +
+                                       $"**It is Captain {(Context.Elo.Lobby.Game.Team1.TurnToPick ? 1 : 2)}'s Turn to pick**\n\n" +
                                        "**Player Pool**\n" +
                                        $"{string.Join(" ", Context.Elo.Lobby.Game.QueuedPlayerIDs.Select(x => Context.Guild.GetUser(x)?.Mention))}");
             }
