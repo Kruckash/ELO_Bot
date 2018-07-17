@@ -20,12 +20,12 @@
         {
             var r = Context.Server.Settings.Registration;
             return SimpleEmbedAsync(
-                $"**AllowMultiRegistration:** {r.AllowMultiRegistration}\n" + $"**DefaultLossModifier:** {r.DefaultLossModifier}\n"
+                $"**AllowMultiRegistration:** {r.AllowMultiRegistration}\n" + $"**DefaultWinModifier:** {r.DefaultWinModifier}\n"
                                                       + $"**DefaultLossModifier:** {r.DefaultLossModifier}\n"
                                                       + $"**RegistrationBonus:** {r.RegistrationBonus}\n"
                                                       + $"**DeleteProfileOnLeave:** {r.DeleteProfileOnLeave}\n" 
-                                                      + $"**NameFormat:** {r.NameFormat}\n"
-                                                      + $"**Message:** \n{r.Message}\n");
+                                                      + $"**NickNameFormat:** {r.NameFormat}\n"
+                                                      + $"**RegisterMessage:** \n{r.Message}\n");
         }
 
         [Command("ReadabilityInfo")]
@@ -36,7 +36,7 @@
                 $"**JoinLeaveErrors:** {r.JoinLeaveErrors}\n" + 
                 $"**ReplyErrors:** {r.ReplyErrors}");
         }
-
+        
         [Command("RegisterRole")]
         [Summary("Set the default role user's are given when registering")]
         public Task RegisterRoleAsync(IRole role)
@@ -158,6 +158,7 @@
         }
 
         [Command("MultiRegister")]
+        [Alias("AllowMultiRegistration")]
         [Summary("toggle whether users can use the register command more than once")]
         public Task ToggleMultiRegisterAsync()
         {
