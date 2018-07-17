@@ -21,10 +21,10 @@
                 $"**AllowNegativeScore:** {g.AllowNegativeScore}\n" + $"**DMAnnouncements:** {g.DMAnnouncements}\n"
                                                                 + $"**RemoveOnAfk:** {g.RemoveOnAfk}\n"
                                                                 + $"**BlockMultiQueuing:** {g.BlockMultiQueuing}\n"
-                                                                + $"**AllowUserSubmissions (GameResult Command):** {g.AllowUserSubmissions}\n"
+                                                                + $"**User Submit Game Result** (GameResult Command): {g.AllowUserSubmissions}\n"
                                                                 + $"**AnnouncementsChannel:** {Context.Guild.GetChannel(g.AnnouncementsChannel)?.Name ?? "N/A"}\n"
                                                                 + $"**ReQueueDelay:** {g.ReQueueDelay.TotalMinutes} Minutes\n"
-                                                                + $"**UseKd:** {g.UseKd}\n");
+                                                                + $"**Use K/D:** {g.UseKd}\n");
         }
 
         [Command("AllowNegativeScore")]
@@ -98,6 +98,7 @@
         }
 
         [Command("UserGameResults")]
+        [Alias("AllowUserSubmissions, UserSubmit, UserSubmitGameResult")]
         [Summary("Toggle whether users are able to submit their own game results")]
         public Task UserGameResultsAsync()
         {
