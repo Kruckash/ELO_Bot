@@ -24,12 +24,15 @@
         public Task LobbyInfoAsync()
         {
             var l = Context.Elo.Lobby;
-            return SimpleEmbedAsync($"**UserLimit:** {l.UserLimit}\n" +
+            var s = Context.Server.Settings.GameSettings;
+            return SimpleBlueEmbedAsync($"**UserLimit:** {l.UserLimit}\n" +
                                     $"**MapMode:** {l.MapMode}\n" +
-                                    $"**CaptainSortMode:** {l.CaptainSortMode}\n" +
-                                    $"**PickMode:** {l.PickMode}\n" +
-                                    $"**HostSelectionMode:** {l.HostSelectionMode}\n" +
-                                    $"**GamesPlayed:** {l.GamesPlayed}\n" +
+                                    $"**Captain Sort Mode:** {l.CaptainSortMode}\n" +
+                                    $"**Lobby Sort Mode:** {(l.PickMode == GuildModel.Lobby._PickMode.Captains ? $"Captains => {l.CaptainSortMode}" : $"{l.PickMode}")}\n" +
+                                    $"**Host Selection Mode:** {l.HostSelectionMode}\n" +
+                                    $"**User Submit Game Result** (GameResult Command): {s.AllowUserSubmissions}\n" +
+                                    "---\n" +
+                                    $"**Games Played:** {l.GamesPlayed}\n" +
                                     $"**Maps:** {string.Join(", ", l.Maps)}\n" +
                                     $"**Description:** \n{l.Description}\n");
         }
@@ -99,13 +102,16 @@
             lobby.PickMode = pickMode;
             Context.Server.Lobbies.Add(lobby);
             Context.Server.Save();
-            return SimpleEmbedAsync(
-                "Success, Lobby has been created.\n" + $"`Size:` {lobby.UserLimit}\n"
+            return SimpleGreenEmbedAsync(
+                "Success! Lobby has been created.\n" + $"`Size:` {lobby.UserLimit}\n"
                                                       + $"`Team Size:` {lobby.UserLimit / 2}\n"
                                                       + $"`Team Mode:` {(lobby.PickMode == GuildModel.Lobby._PickMode.Captains ? $"Captains => {lobby.CaptainSortMode}" : $"{lobby.PickMode}")}\n"
-                                                      + $"`Host Selection Mode:` {lobby.HostSelectionMode}\n\n"
+                                                      + $"`Host Selection Mode:` {lobby.HostSelectionMode}\n"
+                                                      + $"`Captain Sort Mode:` {lobby.CaptainSortMode}\n"
+                                                      + $"`Map Selection Mode: `{lobby.MapMode}\n\n"
                                                       + $"To Set Description: `{Context.Prefix}LobbyDescription <description>`\n"
-                                                      + $"For More info, type `{Context.Prefix}help Lobby`");
+                                                      + $"Check: `{Context.Prefix}LobbyInfo` and `{Context.Prefix}GameSettings`"
+                                                      + $"For More info, type: `{Context.Prefix}fullhelp Lobby`");
         }
 
         [CheckLobby]
@@ -115,7 +121,7 @@
         {
             Context.Server.Lobbies.Remove(Context.Elo.Lobby);
             Context.Server.Save();
-            return SimpleEmbedAsync("Success, Lobby has been removed.");
+            return SimpleEmbedAsync("Lobby has been removed.");
         }
 
         [CheckLobby]
@@ -140,7 +146,7 @@
 
             Context.Elo.Lobby.Description = description;
             Context.Server.Save();
-            return SimpleEmbedAsync($"Success, Description is now:\n{description}");
+            return SimpleGreenEmbedAsync($"Success! Lobby Description is set to:\n{description}");
         }
 
         [CheckLobby]
@@ -151,7 +157,7 @@
             Context.Elo.Lobby.PickMode = sortMode;
             Context.Server.Save();
 
-            return SimpleEmbedAsync("Success, lobby team sort mode has been modified to:\n" +
+            return SimpleGreenEmbedAsync("Success! Lobby team sort mode has been modified to:\n" +
                                     $"{sortMode.ToString()}");
         }
 
@@ -205,41 +211,49 @@
 
         [CheckLobby]
         [Command("MapMode")]
+        [Alias("MapSelectionMode")]
         [Summary("toggle whether to select a random map on game announcements")]
         public Task RandomMapAsync(GuildModel.Lobby.MapSelector mapMode)
         {
             Context.Elo.Lobby.MapMode = mapMode;
             Context.Server.Save();
 
-            return SimpleEmbedAsync($"Map Selection mode: {Context.Elo.Lobby.MapMode}");
+            return SimpleGreenEmbedAsync($"Sucess!\n" +
+                                        $"**Map Selection Mode**: {Context.Elo.Lobby.MapMode}");
         }
 
         [CheckLobby]
         [Command("MapMode")]
+        [Alias("MapSelectionMode")]
         [Summary("lists map mode types")]
         public Task MapModesAsync()
         {
-            return SimpleEmbedAsync("Map Modes:\n" + 
-                                    $"{string.Join("\n", EloInfo.MapTypes())}");
+            return SimpleBlueEmbedAsync($"Please use command `{Context.Prefix}MapMode <mode>` with the mode you would like to use for this lobby:\n\n" +
+                                        $"**Current Map Selection Mode:** {Context.Elo.Lobby.MapMode}\n\n" +
+                                        "Map Modes:\n" + 
+                                        $"{string.Join("\n", EloInfo.MapTypes())}");
         }
 
         [CheckLobby]
-        [Command("HostSelectionMode")]
+        [Command("HostMode")]
+        [Alias("HostSelectionMode")]
         [Summary("Select how game hosts are chosen")]
         public Task HostModeAsync(GuildModel.Lobby.HostSelector hostSelectionMode)
         {
             Context.Elo.Lobby.HostSelectionMode = hostSelectionMode;
             Context.Server.Save();
 
-            return SimpleEmbedAsync($"Host selection mode = {hostSelectionMode.ToString()}");
+            return SimpleGreenEmbedAsync($"Success!\n" +
+                $"**Host selection mode**: {hostSelectionMode.ToString()}");
         }
 
         [CheckLobby]
-        [Command("HostSelectionMode")]
+        [Command("HostMode")]
+        [Alias("HostSelectionMode")]
         [Summary("Display host selection modes")]
         public Task HostModeAsync()
         {
-            return SimpleEmbedAsync($"Please use command `{Context.Prefix}HostSelectionMode <mode>` with the host selection mode you would like for this lobby:\n" +
+            return SimpleEmbedAsync($"Please use command `{Context.Prefix}HostSelectionMode <mode>` with the host selection mode you would like for this lobby:\n\n" +
                                     "`MostWins` __**Selects Player with Most Wins**__\n" +
                                     "`MostPoints` __**Selects Player with Most Points**__\n" +
                                     "`HighestWinLoss` __**Selects the Player with the highest Win/Loss Ratio**__\n" +
@@ -293,7 +307,7 @@
             {
                 Context.Elo.Lobby.Maps.AddRange(maps);
                 Context.Server.Save();
-                await SimpleEmbedAsync("Success, Lobby Map list is now:\n" +
+                await SimpleGreenEmbedAsync("Success! Lobby Map list is now:\n" +
                                        $"{string.Join("\n", Context.Elo.Lobby.Maps)}");
             }
             else
