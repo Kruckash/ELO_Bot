@@ -12,23 +12,15 @@
 ### `Features`
 Discord 10 mans levelling, game leaderboards and more!
 
-User Stats (Rank, Games Played, Wins, Losses, Win/Loss Ratio and K/D (if manually added)).
-
-Sortable Leaderboard
-
-Automaticly assign rank/level roles based on customizable points threshold.
-
-Customizable Win/Loss modifier per rank/level
-
-Easy moderation and administration of matches and lobbies
-
-Multiple options for automaticly selecting a player to host match room
-
-Multiple team sorting options
-
-Multiple map sorting options
-
-Cooldown system
+* User Stats (Rank, Games Played, Wins, Losses, Win/Loss Ratio and K/D (if manually added)).
+* Sortable Leaderboard
+* Automaticly assign rank/level roles based on customizable points threshold.
+* Customizable Win/Loss modifier per rank/level
+* Easy moderation and administration of matches and lobbies
+* Multiple options for automaticly selecting a player to host match room
+* Multiple team sorting options
+* Multiple map sorting options
+* Cooldown system
 
 
 Highly Customizable with thousands of users daily!
