@@ -26,7 +26,7 @@
         [Summary("View info about the Premium settings")]
         public Task OwnerAsync()
         {
-            return SimpleEmbedAsync(
+            return SimpleBlueEmbedAsync(
                 "**Premium:**\n" + $"**Has Used Premium?:** {Context.Server.Settings.Premium.IsPremium}\n" +
                                  $"**Keys Used:** \n{string.Join("\n", Context.Server.Settings.Premium.PremiumKeys.Select(x => $"{x.Token} => {x.ValidFor.TotalDays} Days"))}\n" + 
                                  $"**Expires:** {Context.Server.Settings.Premium.Expiry.ToLongDateString()} {Context.Server.Settings.Premium.Expiry.ToLongTimeString()}\n");
@@ -55,8 +55,8 @@
             tokens.Remove(match);
             tokenModel.TokenList = tokens;
             tokenModel.Save();
-            return SimpleEmbedAsync(
-                $"Success, Token Redeemed ({match.Days} days)\n"
+            return SimpleGreenEmbedAsync(
+                $"Success! Token Redeemed ({match.Days} days)\n"
                 + $"Server expires on {Context.Server.Settings.Premium.Expiry.ToLongDateString()} {Context.Server.Settings.Premium.Expiry.ToLongTimeString()}");
         }
 
@@ -141,7 +141,8 @@
             return SimpleEmbedAsync("Admin Role Added.");
         }
 
-        [Command("ModeratorList")]
+        [Command("ModList")]
+        [Alias("ModeratorList")]
         [Summary("View all moderator roles in the server")]
         public Task ModeratorListAsync()
         {
@@ -151,6 +152,7 @@
         }
 
         [Command("AdminList")]
+        [Alias("AdministratorList")]
         [Summary("View all admin roles in the server")]
         public Task AdminListAsync()
         {

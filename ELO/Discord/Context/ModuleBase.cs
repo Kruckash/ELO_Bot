@@ -108,6 +108,36 @@
         }
 
         /// <summary>
+        ///     Rather than just replying, we can spice things up a bit and embed them in a small message
+        /// </summary>
+        /// <param name="message">The text that will be contained in the embed</param>
+        /// <returns>The message that was sent</returns>
+        public Task<IUserMessage> SimpleGreenEmbedAsync(string message)
+        {
+            var embed = new EmbedBuilder
+            {
+                Description = message,
+                Color = Color.DarkGreen
+            };
+            return ReplyAsync(string.Empty, false, embed.Build());
+        }
+        /// <summary>
+        ///     Rather than just replying, we can spice things up a bit and embed them in a small message
+        /// </summary>
+        /// <param name="message">The text that will be contained in the embed</param>
+        /// <returns>The message that was sent</returns>
+        public Task<IUserMessage> SimpleBlueEmbedAsync(string message)
+        {
+            var embed = new EmbedBuilder
+            {
+                Description = message,
+                Color = Color.DarkBlue
+            };
+            return ReplyAsync(string.Empty, false, embed.Build());
+        }
+
+
+        /// <summary>
         ///     This will generate a paginated message which allows users to use reactions to change the content of the message
         /// </summary>
         /// <param name="pager">Our paginated message</param>

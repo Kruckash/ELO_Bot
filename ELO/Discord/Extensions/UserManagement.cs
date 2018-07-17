@@ -40,7 +40,7 @@
             }
         }
 
-        public static async Task GiveMaxRoleAsync(Context context, GuildModel.User user = null)
+        public static async Task UpdateUserRanksAsync(Context context, GuildModel.User user = null)
         {
             try
             {
@@ -67,6 +67,10 @@
                             // Return if the user already has the role
                             return;
                         }
+
+                        var rolesToRemove = gUser.Roles.Where(x => context.Server.Ranks.Any(r => r.RoleID == x.Id) && x.Id != serverRole.Id);
+
+                        await gUser.RemoveRolesAsync(rolesToRemove);
 
                         await gUser.AddRoleAsync(serverRole);
                     }
@@ -220,7 +224,7 @@
             }
             else
             {
-                await GiveMaxRoleAsync(con, newUser);
+                await UpdateUserRanksAsync(con, newUser);
             }
 
             await UserRenameAsync(con, newUser);

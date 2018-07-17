@@ -57,10 +57,10 @@
                 if (!context.Elo.Lobby.Game.IsPickingTeams)
                 {
                     context.Elo.Lobby.GamesPlayed++;
-                    await context.Channel.SendMessageAsync("**Game has Started**\n" +
+                    await context.Channel.SendMessageAsync($"**Game #{context.Elo.Lobby.GamesPlayed} has Started**\n" +
                                                            $"Team1: {string.Join(", ", context.Elo.Lobby.Game.Team1.Players.Select(x => context.Guild.GetUser(x)?.Mention).ToList())}\n" +
                                                            $"Team2: {string.Join(", ", context.Elo.Lobby.Game.Team2.Players.Select(x => context.Guild.GetUser(x)?.Mention).ToList())}\n" +
-                                                           $"**Game #{context.Elo.Lobby.GamesPlayed}**");
+                                                           $"**Game ID:** {context.Elo.Lobby.GamesPlayed}");
                     context.Server.Results.Add(new GuildModel.GameResult
                     {
                         Comments = new List<GuildModel.GameResult.Comment>(),
@@ -139,10 +139,11 @@
             context.Elo.Lobby.Game.Team2.Players.Add(cap2.Id);
             context.Elo.Lobby.Game.QueuedPlayerIDs.Remove(cap1.Id);
             context.Elo.Lobby.Game.QueuedPlayerIDs.Remove(cap2.Id);
-            context.Channel.SendMessageAsync($"**Team1 Captain** {cap1.Mention}\n" +
-                                                   $"**Team2 Captain** {cap2.Mention}\n" +
+            context.Channel.SendMessageAsync("Current queue is full. Starting the picking phase..\n" +
+                                                   $"**Team1 Captain** {cap1.Mention}\n" +
+                                                   $"**Team2 Captain** {cap2.Mention}\n\n" +
                                                    $"**Select Your Teams using `{context.Prefix}pick <@user>`**\n" +
-                                                   "**Captain 1 Always Picks First**\n" +
+                                                   "**Captain 1 Always Picks First**\n\n" +
                                                    "**Player Pool**\n" +
                                                    $"{string.Join(" ", users.Select(x => x.Mention))}");
             context.Elo.Lobby.Game.IsPickingTeams = true;
@@ -155,7 +156,7 @@
 
         public static async Task AnnounceGameAsync(Context context)
         {
-            var mainEmbed = new EmbedBuilder { Title = "Game has Started", Color = Color.Blue }.AddField("Game Info", $"Lobby: {(context.Channel as ITextChannel).Mention}\n" + $"Game: {context.Elo.Lobby.GamesPlayed}\n");
+            var mainEmbed = new EmbedBuilder { Title = $"Game #{context.Elo.Lobby.GamesPlayed} has Started", Color = Color.Blue }.AddField(" ", $"Lobby: {(context.Channel as ITextChannel).Mention}\n" + $"Game ID: {context.Elo.Lobby.GamesPlayed}\n");
 
             var team1Mentions = string.Join(" ", context.Elo.Lobby.Game.Team1.Players.Select(x => context.Guild.GetUser(x)?.Mention).ToList());
             var team2Mentions = string.Join(" ", context.Elo.Lobby.Game.Team2.Players.Select(x => context.Guild.GetUser(x)?.Mention).ToList());
@@ -214,9 +215,9 @@
         {
             var dmEmbed = new EmbedBuilder
             {
-                Title = "Game has Started"
-            }.AddField("Game Info", $"Lobby: {context.Channel.Name}\n" +
-                                          $"Game: {context.Elo.Lobby.GamesPlayed}\n")
+                Title = $"Game #{context.Elo.Lobby.GamesPlayed} has Started"
+            }.AddField(" ", $"Lobby: {context.Channel.Name}\n" +
+                                          $"Game ID: {context.Elo.Lobby.GamesPlayed}\n")
             .AddField("Team 1", $"{string.Join(" ", context.Elo.Lobby.Game.Team1.Players.Select(x => context.Server.Users.FirstOrDefault(u => u.UserID == x)?.Username).Where(x => x != null))}")
             .AddField("Team 2", $"{string.Join(" ", context.Elo.Lobby.Game.Team2.Players.Select(x => context.Server.Users.FirstOrDefault(u => u.UserID == x)?.Username).Where(x => x != null))}");
 

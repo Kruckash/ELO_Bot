@@ -58,7 +58,7 @@
             };
             Context.Server.Ranks.Add(rank);
             Context.Server.Save();
-            return SimpleEmbedAsync("Rank added.");
+            return SimpleGreenEmbedAsync("Rank added.");
         }
 
         [Command("DelRank")]

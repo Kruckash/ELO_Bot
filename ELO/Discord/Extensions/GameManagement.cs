@@ -26,7 +26,7 @@
                     await context.Channel.SendMessageAsync("", false, new EmbedBuilder
                     {
                         Color = Color.DarkOrange,
-                        Description = "Success, game has been canceled."
+                        Description = "Success! Game has been canceled."
                     }.Build());
 
                     return;
@@ -77,7 +77,7 @@
                     }
 
                     var rename = Task.Run(() => UserManagement.UserRenameAsync(context, user));
-                    var role = Task.Run(() => UserManagement.GiveMaxRoleAsync(context, user));
+                    var role = Task.Run(() => UserManagement.UpdateUserRanksAsync(context, user));
                     user.Stats.GamesPlayed++;
                 }
 
@@ -109,7 +109,7 @@
                     eloUser.Stats.Points += maxRank.WinModifier;
                     winEmbed.AddField($"{eloUser.Username} (+{maxRank.WinModifier})", $"Points: {eloUser.Stats.Points}\n" + $"Wins: {eloUser.Stats.Wins}");
                     var rename = Task.Run(() => UserManagement.UserRenameAsync(context, eloUser));
-                    var role = Task.Run(() => UserManagement.GiveMaxRoleAsync(context, eloUser));
+                    var role = Task.Run(() => UserManagement.UpdateUserRanksAsync(context, eloUser));
                 }
             }
             context.Server.Save();
@@ -141,7 +141,7 @@
 
                     loseEmbed.AddField($"{eloUser.Username} (-{maxRank.LossModifier})", $"Points: {eloUser.Stats.Points}\n" + $"Losses: {eloUser.Stats.Losses}");
                     var rename = Task.Run(() => UserManagement.UserRenameAsync(context, eloUser));
-                    var role = Task.Run(() => UserManagement.GiveMaxRoleAsync(context, eloUser));
+                    var role = Task.Run(() => UserManagement.UpdateUserRanksAsync(context, eloUser));
                 }
             }
             context.Server.Save();

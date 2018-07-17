@@ -110,26 +110,24 @@
         }
 
         [CustomPermissions]
-        [Command("LeaderBoardSortModes")]
+        [Command("LeaderBoard")]
         [Alias("SortLeaderboard", "SortLb", "LeaderboardSort")]
         [Summary("Displays leaderboard sort modes")]
         public Task LeaderboardAsync()
         {
-            return SimpleEmbedAsync("Leaderboard Sort Options:\n" +
+            return SimpleEmbedAsync("Leader board Sort Options:\n" +
                                     "Win\r\n" +
                                     "Loss\r\n" +
                                     "Points\r\n" +
                                     "GamesPlayed\r\n" +
                                     "Kills\r\n" +
                                     "Deaths\r\n" +
-                                    "Draws\r\n" +
-                                    "\r\n" +
-                                    $"**Default Sort Mode**: {LeaderboardSortMode.Points}");
+                                    "Draws");
         }
 
         [CustomPermissions]
         [Command("Leaderboard")]
-        [Alias("ShowLB", "top", "top10", "top5", "top15")]
+        [Alias("SortLeaderboard", "SortLb", "LeaderboardSort")]
         [Summary("Displays the leaderboard")]
         public Task LeaderboardAsync(LeaderboardSortMode sortMode = LeaderboardSortMode.Points)
         {
@@ -201,7 +199,7 @@
 
             var pager = new PaginatedMessage
             {
-                Title = "ELO - Leaderboard",
+                Title = "ELO Bot Leaderboard",
                 Pages = pages,
                 Color = Color.Blue
             };
@@ -312,7 +310,7 @@
                                   });
 
             Context.Server.Save();
-            return SimpleEmbedAsync($"Success, {Context.User.Mention} commented on game #{gameNumber}\n" + $"{comment}");
+            return SimpleGreenEmbedAsync($"Success! {Context.User.Mention} commented on game #{gameNumber}\n" + $"{comment}");
         }
 
         public Task ShowGameAsync(ulong lobbyId, int gameNumber)

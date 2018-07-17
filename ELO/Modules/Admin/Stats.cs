@@ -9,7 +9,11 @@
     using ELO.Discord.Context;
     using ELO.Discord.Extensions;
     using ELO.Discord.Preconditions;
-    
+    using ELO.Handlers;
+    using ELO.Models;
+    using ELO.Models.Parser;
+
+    using global::Discord;
     using global::Discord.Commands;
     using global::Discord.WebSocket;
 
@@ -196,7 +200,7 @@
                         eUser.Stats.Points = modifier;
                         finalValue = eUser.Stats.Points;
                         var nick = Task.Run(() => UserManagement.UserRenameAsync(Context, eUser));
-                        var role = Task.Run(() => UserManagement.GiveMaxRoleAsync(Context, eUser));
+                        var role = Task.Run(() => UserManagement.UpdateUserRanksAsync(Context, eUser));
                         break;
                     default:
                         throw new InvalidOperationException("Unable to modify stats with provided type");
@@ -247,7 +251,7 @@
                         eUser.Stats.Points += modifier;
                         finalValue = eUser.Stats.Points;
                         var nick = Task.Run(() => UserManagement.UserRenameAsync(Context, eUser));
-                        var role = Task.Run(() => UserManagement.GiveMaxRoleAsync(Context, eUser));
+                        var role = Task.Run(() => UserManagement.UpdateUserRanksAsync(Context, eUser));
                         break;
                     default:
                         throw new InvalidOperationException("Unable to modify stats with provided type");
@@ -269,5 +273,114 @@
             death,
             point
         }
+   
+        // Could literally just use the leaderboard to get the users...
+        /// <summary>
+        ///     server owner? Admin only command, shows all registered users.
+        /// </summary>
+        /// <returns></returns>
+        [Command("ListUsers")]
+        [Alias("UserList")]
+        [Summary("Returns all registered users")]
+        public Task ListUsersAsync()
+        {
+            var userList = Context.Server.Users.OrderByDescending(u => u.Stats.Points).Select(
+                u =>
+                {
+                    var name = Context.Guild.GetUser(u.UserID)?.Mention ?? $"[{u.UserID}]";
+                    var userPoints= $"{u.Stats.Points.ToString().PadRight(10)}\u200B";
+                    return $"`{userPoints}` - {name}";
+                }).ToList();
+
+            return SimpleBlueEmbedAsync($"`Points  User      \u200B `\n{string.Join("\n", userList)}");
+        }
+
+        /* Meeeh... old ScoreboardReset code
+        /// <summary>
+        ///     server owner only command, resets all user scores on the scoreboard.
+        /// </summary>
+        /// <returns></returns>
+        [Command("ScoreboardReset", RunMode = RunMode.Async)]
+        [Summary("ScoreboardReset")]
+        [Remarks("Reset Points, Wins and Losses for all users in the server")]
+        //public async Task Reset(Context context, GuildModel server)
+        public async Task ResetScore() //Context context
+        {
+            var server = Servers.ServerList.First(x => x.ServerId == Context.Guild.Id);
+            
+            await ReplyAsync("Working...");
+
+            var reset = server.UserList.ToList();
+            foreach (var user in reset)
+            {
+                if (user.Points != server.registerpoints || user.Wins != 0 || user.Losses != 0)
+                {
+                    user.Points = server.registerpoints;
+                    user.Wins = 0;
+                    user.Losses = 0;
+                }
+            }
+            server.UserList = reset;
+
+            await ReplyAsync("Leaderboard Reset Complete!\n" +
+                             "NOTE: Names and ranks will be reset over the next few minutes.\n" +
+                             $"EST time = {(double)reset.Count * 6 / 60 / 60} hours");
+            var i = 0;
+            var completion = await ReplyAsync($"{i}/{reset.Count} completed");
+            var botposition = ((SocketGuild)Context.Guild).Users.First(x => x.Id == Context.Client.CurrentUser.Id)
+                .Roles
+                .OrderByDescending(x => x.Position).First().Position;
+            foreach (var user in reset)
+            {
+                try
+                {
+                    i++;
+                    var us = Context.Guild.GetUser(user.UserId);
+                      //old: await Context.Guild.GetUserAsync(user.UserId);
+                    var nick = us.Nickname ?? "";
+                    if (!nick.Contains(Context.Server.Settings.Registration.NameFormat) &&
+                    //old if (!nick.Contains(Globals.GetNamePrefix(server, user.UserId, true)) &&
+                        Context.Guild.OwnerId != us.Id &&
+                        ((SocketGuildUser)us).Roles.OrderByDescending(x => x.Position).First().Position < botposition)
+                    {
+                        try
+                        {
+                            await us.ModifyAsync(x =>
+                            {
+                                x.Nickname = Context.Server.Settings.Registration.NameFormat + $" {user.Username}";
+                                //old: x.Nickname = Globals.GetNamePrefix(server, user.UserId) + $" {user.Username}";
+                            });
+                        }
+                        catch (Exception e)
+                        {
+                            Console.WriteLine(e);
+                        }
+
+                    }
+
+                    await Task.Delay(2500);
+
+                    await us.RemoveRolesAsync(server.Ranks.Select(x => Context.Guild.GetRole(x.RoleId)));
+                    await Task.Delay(1000);
+                    if (server.Ranks.Count(x => x.Points < user.Points) > 0)
+                    {
+                        var rank = server.Ranks.Where(x => x.Points < user.Points).OrderByDescending(x => x.Points).First();
+                        await us.AddRoleAsync(Context.Guild.GetRole(rank.RoleId));
+                    }
+                    var i1 = i;
+                    await completion.ModifyAsync(x => x.Content = $"{i1}/{reset.Count} completed");
+
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                }
+            }
+
+            await ReplyAsync("Reset complete.");
+        }
+        */
+
+
     }
 }
