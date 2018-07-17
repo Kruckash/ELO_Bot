@@ -247,5 +247,91 @@
                                                   Backward = true, Trash = true
                                               });
         }
+
+
+        // Prune command copy/pasta from Lithium BOT
+        public List<IMessage> GetmessagesAsync(int count = 100)
+        {
+            var msgs = Context.Channel.GetMessagesAsync(count).Flatten();
+            return msgs.Where(x => x.Timestamp.UtcDateTime + TimeSpan.FromDays(14) > DateTime.UtcNow).ToList().Result;
+        }
+
+        [Command("prune")]
+        [Alias("purge", "clear")]
+        [Summary("Mod Prune <no. of messages>")]
+        [Remarks("removes specified amount of messages")]
+        public async Task Prune(int count = 100)
+        {
+            if (count < 1)
+            {
+                await ReplyAsync("**ERROR: **Please Specify the amount of messages you want to clear");
+            }
+            else if (count > 100)
+            {
+                await ReplyAsync("**Error: **You can only clear 100 messages at once!");
+            }
+            else
+            {
+                await Context.Message.DeleteAsync().ConfigureAwait(false);
+                var limit = count < 100 ? count : 100;
+                //var enumerable = await Context.Channel.GetMessagesAsync(limit).Flatten().ConfigureAwait(false);
+                var enumerable = GetmessagesAsync(limit);
+                try
+                {
+                    await (Context.Channel as ITextChannel).DeleteMessagesAsync(enumerable).ConfigureAwait(false);
+                }
+                catch
+                {
+                    //
+                }
+
+                /*await ReplyAsync($"Cleared **{enumerable.Count}** Messages");
+
+                await Context.Server.ModLog(new EmbedBuilder()
+                    .WithColor(Color.DarkTeal)
+                    .AddField("Pruned Messages",
+                        $"{count} messages cleared")
+                    .AddField("Moderator",
+                        $"Mod: {Context.User.Username}\n" +
+                        $"Mod Nick: {((IGuildUser)Context.User)?.Nickname ?? "N/A"}\n" +
+                        $"Channel: {Context.Channel.Name}")
+                    .WithCurrentTimestamp(), Context.Guild);
+                    */
+            }
+        }
+
+        [Command("prune")]
+        [Alias("purge", "clear")]
+        [Summary("Mod Prune <user>")]
+        [Remarks("removes messages from a user in the last 100 messages")]
+        public async Task Prune(IUser user)
+        {
+            await Context.Message.DeleteAsync().ConfigureAwait(false);
+            //var enumerable = await Context.Channel.GetMessagesAsync().Flatten().ConfigureAwait(false);
+            var enumerable = GetmessagesAsync();
+            var newlist = enumerable.Where(x => x.Author == user).ToList();
+            try
+            {
+                await (Context.Channel as ITextChannel).DeleteMessagesAsync(newlist).ConfigureAwait(false);
+            }
+            catch
+            {
+                //
+            }
+
+            /*await ReplyAsync($"Cleared **{user.Username}'s** Messages (Count = {newlist.Count})");
+
+            await Context.Server.ModLog(new EmbedBuilder()
+                .WithColor(Color.DarkTeal)
+                .AddField($"Pruned Messages from {user.Username}",
+                    $"{newlist.Count} messages cleared")
+                .AddField("Moderator",
+                    $"Mod: {Context.User.Username}\n" +
+                    $"Mod Nick: {((IGuildUser)Context.User)?.Nickname ?? "N/A"}\n" +
+                    $"Channel: {Context.Channel.Name}")
+                .WithCurrentTimestamp(), Context.Guild);*/
+        }
+
+
     }
 }
