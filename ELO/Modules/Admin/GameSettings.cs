@@ -21,7 +21,7 @@
                 $"**AllowNegativeScore:** {g.AllowNegativeScore}\n" + $"**DMAnnouncements:** {g.DMAnnouncements}\n"
                                                                 + $"**RemoveOnAfk:** {g.RemoveOnAfk}\n"
                                                                 + $"**BlockMultiQueuing:** {g.BlockMultiQueuing}\n"
-                                                                + $"**User Submit Game Result** (GameResult Command): {g.AllowUserSubmissions}\n"
+                                                                + $"**User Submit Game Results** (GameResult Command): {g.AllowUserSubmissions}\n"
                                                                 + $"**AnnouncementsChannel:** {Context.Guild.GetChannel(g.AnnouncementsChannel)?.Name ?? "N/A"}\n"
                                                                 + $"**ReQueueDelay:** {g.ReQueueDelay.TotalMinutes} Minutes\n"
                                                                 + $"**Use K/D:** {g.UseKd}\n");

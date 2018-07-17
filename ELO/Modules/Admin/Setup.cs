@@ -36,7 +36,7 @@
                 $"**JoinLeaveErrors:** {r.JoinLeaveErrors}\n" + 
                 $"**ReplyErrors:** {r.ReplyErrors}");
         }
-        
+
         [Command("RegisterRole")]
         [Summary("Set the default role user's are given when registering")]
         public Task RegisterRoleAsync(IRole role)

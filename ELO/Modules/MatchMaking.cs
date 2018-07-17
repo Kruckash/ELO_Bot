@@ -336,7 +336,7 @@
         // Mods/Admins version of ResultTypes is located at Modules/Moderator/Result.cs
         [Command("ResultTypes")]
         [Summary("list game result types")]
-        [Remarks("ResultTypes to use with =Game (Mod+) and =GameResult (Captains)\n <lobbyChannel> <gameNumber> <resultType>")]
+        [Remarks("ResultTypes to use with =Game (Mod+) and =GameResult (Captains)")]
         public Task ResultTypesAsync()
         {
             var mainResultTypesEmbed = new EmbedBuilder { Title = "Game Result Submission", Description = $"Available result types for use with Game Result Submission commands\n", Color = Color.Blue }.AddField("Game Result Types", $"\n{string.Join("\n", EloInfo.GameResults())}");

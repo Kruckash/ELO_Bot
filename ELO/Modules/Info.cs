@@ -199,7 +199,7 @@
 
             var pager = new PaginatedMessage
             {
-                Title = "ELO Bot Leaderboard",
+                Title = "ELO - Leaderboard",
                 Pages = pages,
                 Color = Color.Blue
             };

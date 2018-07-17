@@ -274,7 +274,7 @@
             point
         }
    
-        // Could literally just use the leaderboard to get the users...
+        // Could literally have used the leaderboard to get the users... but whatever :D
         /// <summary>
         ///     server owner? Admin only command, shows all registered users.
         /// </summary>

@@ -61,7 +61,7 @@
                 await GameManagement.GameResultAsync(Context, game, result);
             }
         }
-        
+
         [Command("Win")]
         [Summary("Run a win event for the specified users")]
         public Task WinGameAsync(params SocketGuildUser[] users)

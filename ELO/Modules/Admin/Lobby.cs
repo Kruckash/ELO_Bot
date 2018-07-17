@@ -183,7 +183,7 @@
             Context.Elo.Lobby.CaptainSortMode = captainSortMode;
             Context.Server.Save();
 
-            return SimpleEmbedAsync("Success, captain sort mode has been modified to:\n" +
+            return SimpleGreenEmbedAsync("Success! Captain sort mode has been modified to:\n" +
                                     $"{captainSortMode.ToString()}");
         }
 
@@ -192,7 +192,7 @@
         [Summary("Show captain sort modes")]
         public Task CapSortModeAsync()
         {
-            return SimpleEmbedAsync($"Please use command `{Context.Prefix}CapSortMode <mode>` with the captain selection mode you would like for this lobby:\n" +
+            return SimpleBlueEmbedAsync($"Please use command `{Context.Prefix}CapSortMode <mode>` with the captain selection mode you would like for this lobby:\n" +
                                     "`MostWins` __**Choose Two Players with Highest Wins**__\n" +
                                     "Selects the two players with the highest amount of Wins\n\n" +
                                     "`MostPoints` __**Choose Two Players with Highest Points**__\n" +
@@ -228,7 +228,7 @@
         [Summary("lists map mode types")]
         public Task MapModesAsync()
         {
-            return SimpleBlueEmbedAsync($"Please use command `{Context.Prefix}MapMode <mode>` with the mode you would like to use for this lobby:\n\n" +
+            return SimpleEmbedAsync($"Please use command `{Context.Prefix}MapMode <mode>` with the mode you would like to use for this lobby:\n\n" +
                                         $"**Current Map Selection Mode:** {Context.Elo.Lobby.MapMode}\n\n" +
                                         "Map Modes:\n" + 
                                         $"{string.Join("\n", EloInfo.MapTypes())}");
@@ -269,7 +269,7 @@
             {
                 Context.Elo.Lobby.Maps.Add(mapName);
                 Context.Server.Save();
-                await SimpleEmbedAsync("Success, Lobby Map list is now:\n" +
+                await SimpleGreenEmbedAsync("Success! Lobby Map list is now:\n" +
                                        $"{string.Join("\n", Context.Elo.Lobby.Maps)}");
             }
             else
@@ -287,7 +287,7 @@
             {
                 Context.Elo.Lobby.Maps.Remove(mapName);
                 Context.Server.Save();
-                await SimpleEmbedAsync("Success, Lobby Map list is now:\n" +
+                await SimpleGreenEmbedAsync("Success! Lobby Map list is now:\n" +
                                        $"{string.Join("\n", Context.Elo.Lobby.Maps)}");
             }
             else
