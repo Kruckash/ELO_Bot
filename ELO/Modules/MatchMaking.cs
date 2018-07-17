@@ -74,7 +74,7 @@
         }
 
         [Command("Leave")]
-        [Alias("l", "out", "unSign", "remove", "unready", "add")]
+        [Alias("l", "out", "unSign", "remove", "unready")]
         [Summary("Leave the current lobby's queue")]
         public async Task LeaveLobbyAsync()
         {
@@ -126,11 +126,11 @@
             else
             {
                 await SimpleEmbedAsync($"**Team1 Captain** {Context.Guild.GetUser(Context.Elo.Lobby.Game.Team1.Captain)?.Mention}\n" +
-                                       $"**Team1:** {string.Join(", ", Context.Elo.Lobby.Game.Team1.Players.Select(x => Context.Guild.GetUser(x)?.Mention).ToList())}\n" +
+                                       $"**Team1:** {string.Join(", ", Context.Elo.Lobby.Game.Team1.Players.Select(x => Context.Guild.GetUser(x)?.Mention).ToList())}\n\n" +
                                        $"**Team2 Captain** {Context.Guild.GetUser(Context.Elo.Lobby.Game.Team2.Captain)?.Mention}\n" +
-                                       $"**Team2:** {string.Join(", ", Context.Elo.Lobby.Game.Team2.Players.Select(x => Context.Guild.GetUser(x)?.Mention).ToList())}\n" +
+                                       $"**Team2:** {string.Join(", ", Context.Elo.Lobby.Game.Team2.Players.Select(x => Context.Guild.GetUser(x)?.Mention).ToList())}\n\n" +
                                        $"**Select Your Teams using `{Context.Prefix}pick <@user>`**\n" +
-                                       $"**It is Captain {(Context.Elo.Lobby.Game.Team1.TurnToPick ? 1 : 2)}'s Turn to pick**\n" +
+                                       $"**It is Captain {(Context.Elo.Lobby.Game.Team1.TurnToPick ? 1 : 2)}'s Turn to pick**\n\n" +
                                        "**Player Pool**\n" +
                                        $"{string.Join(" ", Context.Elo.Lobby.Game.QueuedPlayerIDs.Select(x => Context.Guild.GetUser(x)?.Mention))}");
             }
@@ -333,12 +333,26 @@
 
             Context.Server.Save();
         }
-
+        // Mods/Admins version of ResultTypes is located at Modules/Moderator/Result.cs
         [Command("ResultTypes")]
         [Summary("list game result types")]
+        [Remarks("ResultTypes to use with =Game (Mod+) and =GameResult (Captains)\n <lobbyChannel> <gameNumber> <resultType>")]
         public Task ResultTypesAsync()
         {
-            return SimpleEmbedAsync($"**Game Results:**\n{string.Join("\n", EloInfo.GameResults())}");
+            var mainResultTypesEmbed = new EmbedBuilder { Title = "Game Result Submission", Description = $"Available result types for use with Game Result Submission commands\n", Color = Color.Blue }.AddField("Game Result Types", $"\n{string.Join("\n", EloInfo.GameResults())}");
+
+            if (Context.Server.Settings.GameSettings.AllowUserSubmissions)
+            {
+                mainResultTypesEmbed.AddField("User Result Submission", $"Captains can use command:\n" +
+                                              $"`{ Context.Prefix }GameResult <lobbyChannel> <gameNumber> <resultType>`\n" + 
+                                              "to set a result.\n\n");
+            }
+            /*.AddField("\u200b", "asd")*/
+            /*return SimpleEmbedAsync($"Mod/Admins can use command `{Context.Prefix}Game <lobbyChannel> <gameNumber> <resultType>` to set a result.\n" +
+                                    
+                                    $"**Game Result types:**\n{string.Join("\n", EloInfo.GameResults())}");*/
+
+            return ReplyAsync(string.Empty, false, mainResultTypesEmbed.Build());
         }
 
         [Command("GameResult")]
