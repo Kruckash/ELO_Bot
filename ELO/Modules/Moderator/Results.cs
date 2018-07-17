@@ -18,11 +18,16 @@
     [Summary("Game results submissions")]
     public class Results : Base
     {
+        // User/Captain version of ResultTypes is located at Modules/MatchMaking.cs (336)
         [Command("ResultTypes")]
         [Summary("list game result types")]
         public Task ResultTypesAsync()
         {
-            return SimpleEmbedAsync($"**Game Results:**\n{string.Join("\n", EloInfo.GameResults())}");
+            //return SimpleEmbedAsync($"**Game Results:**\n{string.Join("\n", EloInfo.GameResults())}");
+            return SimpleEmbedAsync($"Mod/Admins can use command\n" +
+                                    $"`{Context.Prefix}Game <lobbyChannel> <gameNumber> <resultType>`\n" +
+                                    "to set a result.\n\n" +
+                                    $"**Game Result types:**\n{string.Join("\n", EloInfo.GameResults())}");
         }
 
         [Command("Game")]
@@ -56,7 +61,7 @@
                 await GameManagement.GameResultAsync(Context, game, result);
             }
         }
-
+        
         [Command("Win")]
         [Summary("Run a win event for the specified users")]
         public Task WinGameAsync(params SocketGuildUser[] users)
