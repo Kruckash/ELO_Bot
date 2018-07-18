@@ -23,9 +23,9 @@ Discord 10 mans levelling, game leaderboards and more!
 * ELO can automaticly select a map on match start
 * Player cooldown system (temp bans)
 
-ELO is highly customizable with thousands of users daily!
-Test it for free by inviting it to your server.
-=help and =fullhelp shows all the commands available.
+ELO is highly customizable with thousands of users daily!  
+Test it for free by inviting it to your server.  
+=help and =fullhelp shows all the commands available.  
 
 ### `NoSQL Database`
 * Uses <a href="https://ravendb.net">RavenDB</a> for storing servers and userdata
