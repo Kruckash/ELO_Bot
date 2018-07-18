@@ -22,6 +22,9 @@ Discord 10 mans levelling, game leaderboards and more!
 * Multiple map sorting options
 * Cooldown system
 
+### `NoSQL Database`
+* Uses <a href="https://ravendb.net">RavenDB</a> for storing servers and userdata
+
 
 Highly Customizable with thousands of users daily!
 ### `Contributing`
