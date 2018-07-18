@@ -20,12 +20,13 @@ Discord 10 mans levelling, game leaderboards and more!
 * Multiple options for automaticly selecting a player to host match room
 * Multiple team sorting options
 * Multiple map sorting options
-* Cooldown system
+* ELO can automaticly select a map on match start
+* Player cooldown system (temp bans)
+
+ELO is a highly customizable bot with thousands of users daily!
 
 ### `NoSQL Database`
 * Uses <a href="https://ravendb.net">RavenDB</a> for storing servers and userdata
 
-
-Highly Customizable with thousands of users daily!
 ### `Contributing`
 Feel free to make a pull request, I would love to see everyone's input!
