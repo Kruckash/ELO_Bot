@@ -10,8 +10,7 @@
 </p>
 
 ### `Features`
-Discord 10 mans levelling, game leaderboards and more!
-
+Discord 10 mans (inhouse/league/gathers) with levels, leaderboards and more!
 * User Stats (Rank, Games Played, Wins, Losses, Win/Loss Ratio and K/D (if manually added)).
 * Sortable Leaderboard
 * Automaticly assign rank/level roles based on customizable points threshold.
