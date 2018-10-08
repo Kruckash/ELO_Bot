@@ -20,6 +20,7 @@ Discord 10 mans levelling, game leaderboards and more!
 * Multiple options for automaticly selecting a player to host match room
 * Multiple team sorting options
 * Multiple map sorting options
+* Multiple team pick modes
 * ELO can automaticly select a map on match start
 * Player cooldown system (temp bans)
 
